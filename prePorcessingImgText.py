@@ -7,7 +7,7 @@ import cv2
 from matplotlib import pyplot as plt
 
 # Load the image
-image_path = 'bl.jpg'
+image_path = 'images/bl.jpg'
 original_image = cv2.imread(image_path)
 
 
@@ -98,15 +98,16 @@ inverted_image = cv2.bitwise_not(original_image)
 
 
 # 2 - Binarization - Convert the image to grayscale
-gray_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-
+gray_image = cv2.cvtColor(original_image, cv2.COLOR_RGB2GRAY) # cv2.COLOR_BGR2GRAY || cv2.COLOR_RGB2GRAY
+# plt.imshow(cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB))
+# plt.show()
 
 # Apply Gaussian blur to remove noise
 # blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
 
 
 # 3 - Threshold - Apply thresholding to create a binary image
-_, binary_image = cv2.threshold(gray_image, 137, 255, cv2.THRESH_BINARY  ) # cv2.THRESH_OTSU
+_, binary_image = cv2.threshold(gray_image, 139, 255, cv2.THRESH_BINARY  ) # cv2.THRESH_OTSU
 
 
 # 4 - Noise Removal
@@ -133,26 +134,15 @@ for plane in rgb_planes:
     result_planes.append(diff_img)
 img = cv2.merge(result_planes)
 
-# plt.imshow(img)
-# plt.show()
 
 
 eroded_image = thin_font(img)
-plt.imshow(eroded_image)
+# plt.imshow(eroded_image)
+plt.imshow(cv2.cvtColor(eroded_image, cv2.COLOR_GRAY2RGB))
 plt.show()
+
 # ---------------------------------------- Step 2 ----------------------------------------
-
-step1 = cv2.imread('step1.jpg')
-gray_image2 = cv2.cvtColor(step1, cv2.COLOR_BGR2GRAY)
-
-# Apply seconde thresholding to create a binary image
-_, binary_image2 = cv2.threshold(gray_image2, 170, 255, cv2.THRESH_BINARY  )
-# plt.imshow(binary_image2)
-# plt.show()
 
 # Save the preprocessed image
 preprocessed_image_path = 'preprocessed_bl.jpg'
-cv2.imwrite(preprocessed_image_path, binary_image)
-
-# Display the preprocessed image
-# Image.fromarray(binary_image)
+cv2.imwrite(preprocessed_image_path, eroded_image)
